@@ -24,13 +24,28 @@ export const CartProvider = ({ children }) => {
         console.log(state)
     }
 
+    const increaseQuantity = (productID) => {
+        dispatch({ type: 'INCREASE_QUANTITY', payload: productID})
+    }
+
+    const decreaseQuantity = (productID) => {
+        dispatch({ type: 'DECREASE_QUANTITY', payload: productID})
+    }
+
+    const clearCart = () => {
+        dispatch({type: 'CLEAR_CART'})
+    }
+
 
     return (
         <CartContext.Provider 
             value={{
                 cart: state.cart,
                 addToCart,
-                removeFromCart
+                removeFromCart,
+                increaseQuantity,
+                decreaseQuantity,
+                clearCart
             }}
         >
             { children }

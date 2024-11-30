@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getAllProducts } from "../services/productApi";
+import { getAllProducts } from "../../services/productApi";
 import { ProductItem } from "./ProductItem";
 
 export const ProductList = () => {
