@@ -12,7 +12,7 @@ export const getAllProducts = async () => {
         const { data } = await apiProductsClients.get('/products')
         return data
     } catch (error) {
-        
+        console.error(error)
     }
 }
 

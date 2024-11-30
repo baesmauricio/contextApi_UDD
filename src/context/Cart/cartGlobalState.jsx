@@ -15,8 +15,13 @@ export const CartProvider = ({ children }) => {
 
 
     const addToCart = (product) => {
-        console.log(state)
         dispatch({ type: 'ADD_TO_CART', payload: product })
+        console.log(state)
+    }
+
+    const removeFromCart = (productID) => {
+        dispatch({ type: 'REMOVE_FROM_CART', payload: productID})
+        console.log(state)
     }
 
 
@@ -24,7 +29,8 @@ export const CartProvider = ({ children }) => {
         <CartContext.Provider 
             value={{
                 cart: state.cart,
-                addToCart
+                addToCart,
+                removeFromCart
             }}
         >
             { children }
