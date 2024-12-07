@@ -8,6 +8,8 @@ const apiCLient = axios.create({
 })
 
 
+
+
 export const registerUser = async(userData) => {
     try {
         const { data } = await apiCLient.post('/register', userData)
@@ -22,7 +24,7 @@ export const registerUser = async(userData) => {
 
 /**
  * Esta función recibe unas credenciales como objeto y me retorna un token desde el llamado a la API de autenticación
- * @param {object} credentials 
+ * @param {object} credentials - Objeto que contiene email y contraseña como strings
  * @returns {string} - Retorna el Token
  */
 

@@ -16,12 +16,10 @@ export const CartProvider = ({ children }) => {
 
     const addToCart = (product) => {
         dispatch({ type: 'ADD_TO_CART', payload: product })
-        console.log(state)
     }
 
     const removeFromCart = (productID) => {
         dispatch({ type: 'REMOVE_FROM_CART', payload: productID})
-        console.log(state)
     }
 
     const increaseQuantity = (productID) => {

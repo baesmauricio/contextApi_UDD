@@ -1,8 +1,7 @@
 import { useReducer } from "react"
 import { authenticate, registerUser } from "../../services/userApi";
 import { AuthContext } from "./userContext";
-
-
+import { AuthReducer } from "./userReducer";
 
 const initialState = {
     user: null,
@@ -26,7 +25,7 @@ export const AuthProvider = ({ children }) => {
 
                 dispatch({
                     type: 'REGISTER_USER',
-                    payload: { user, token}
+                    payload: { user, token }
                 })
             } else {
                 throw new Error('Token no recibido');
@@ -59,14 +58,22 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    const logout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+
+        dispatch({ type: 'LOGOUT_USER' })
+    }
+
 
     return (
         <AuthContext.Provider 
-            values={{
+            value={{
                 user: state.user,
                 token: state.token,
                 register,
-                login
+                login,
+                logout
             }}
         >
             {children}
