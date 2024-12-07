@@ -1,7 +1,14 @@
-import { useReducer } from "react"
+import { useEffect, useReducer } from "react"
 import { authenticate, registerUser } from "../../services/userApi";
 import { AuthContext } from "./userContext";
 import { AuthReducer } from "./userReducer";
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+/*   onAuthStateChanged, */
+  signOut,
+} from "firebase/auth";
+import { auth } from "../../config/firebase.config";
 
 const initialState = {
     user: null,
@@ -11,6 +18,18 @@ const initialState = {
 export const AuthProvider = ({ children }) => {
 
     const [ state, dispatch ] = useReducer(AuthReducer, initialState);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if(token && user) {
+            dispatch({
+                type: 'LOGIN_USER',
+                payload: { user, token}
+            })
+        }
+    })
 
 
     const register = async(userData) => {
@@ -32,6 +51,15 @@ export const AuthProvider = ({ children }) => {
             }
         } catch (error) {
             throw new Error(`Error al registrar el usuario: ERROR: ${error}`)
+        }
+    }
+
+    const loginWithGoogle = async() => {
+        const provider = new GoogleAuthProvider()
+        try {
+            await signInWithPopup(auth, provider)
+        } catch (error) {
+            console.error("Error al loguear con Google", error)
         }
     }
 
@@ -58,9 +86,11 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    const logout = () => {
+    const logout = async() => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+
+        await signOut(auth)
 
         dispatch({ type: 'LOGOUT_USER' })
     }
@@ -73,7 +103,8 @@ export const AuthProvider = ({ children }) => {
                 token: state.token,
                 register,
                 login,
-                logout
+                logout,
+                loginWithGoogle
             }}
         >
             {children}

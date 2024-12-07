@@ -7,7 +7,16 @@ const apiCLient = axios.create({
     baseURL: API_URL,
 })
 
-
+apiCLient.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if(token){
+            config.headers["Authorization"] = `Bearer ${token}`
+        }
+        return config
+    },
+    (error) => Promise.reject(error)
+)
 
 
 export const registerUser = async(userData) => {
@@ -18,6 +27,8 @@ export const registerUser = async(userData) => {
         throw new Error(`No pudimos registrar al usuario. ${error}`)
     }
 }
+
+
 
 
 //JSDocs
